@@ -7,7 +7,7 @@ import configparser
 config = None
 # Import SPI library (for hardware SPI) and MCP3008 library.
 import Adafruit_GPIO.SPI as SP
-Iimport Adafruit_MCP3008
+import Adafruit_MCP3008
 # Import GPIO library
 import RPI.GPIO as GPIO
 

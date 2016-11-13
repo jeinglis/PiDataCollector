@@ -55,12 +55,13 @@ def InitializeDigitalInput()
 		GPIO.setup(digitalPoints[x], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 	return;
 
+#return the value of the analog point connected to the mcp3008 pin (0-8)
 def PollAnalog( pin ):
 	value = [0, 0]
 	value[0] = datetime.utcnow()
 	value[1] = mcp.read_adc(pin)
 	return value;
-
+#return the value of the digital point connected to the pi GPIO pin
 def PollDigital( pin ):
 	if[pin] in digitalPoints:
 		value = [0, 0]

@@ -4,53 +4,60 @@
 from datetime import datetime
 # Import config file and parser
 import configparser
-config = None
+config = configparser.ConfigParser()
+config.read('Config.ini')
+
 # Import SPI library (for hardware SPI) and MCP3008 library.
 import Adafruit_GPIO.SPI as SP
 import Adafruit_MCP3008
 # Import GPIO library
-import RPI.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 
 # Software SPI configuration:
-CLK  = 0
-MISO = 0
-MOSI = 0
-CS   = 0
-mcp = None
+CLK  = 18
+MISO = 23
+MOSI = 24
+CS   = 25
+mcp = Adafruit_MCP3008.MCP3008(clk=CLK, cs=CS, miso=MISO, mosi=MOSI)
 
 # DigitalInput configuration
-pinsUsed = None
-digitalPoints = None
+pinsUsed = int(float(config.get('GPIO', 'pinsUsed')))
+digitalPoints = []
 
 
-def ConfigureCollector()
+def ConfigureCollector():
 	#Parse config file
 	config = configparser.ConfigParser()
 	config.read('Config.ini')
 	return;
 
-def InitializeAnalogInput()
+def InitializeAnalogInput():
 	if config == None:
 		ConfigureCollector()
 	# Software SPI configuration:
-	CLK  = config.get('SPI', 'CLK')
-	MISO = config.get('SPI', 'MISO')
-	MOSI = config.get('SPI', 'MOSI')
-	CS   = config.get('SPI', 'CS')
-	mcp = Adafruit_MCP3008.MCP3008(clk=CLK, cs=CS, miso=MISO, mosi=MOSI)
+	#CLK  = config['SPI']['CLK']
+	#MISO = config['SPI']['MISO']
+	#MOSI = config['SPI']['MOSI']
+	#CS   = config['SPI']['CS']
+	#CLK  = 18
+        #MISO = 23
+        #MOSI = 24
+        #CS   = 25
+	#mcp = Adafruit_MCP3008.MCP3008(clk=CLK, cs=CS, miso=MISO, mosi=MOSI)
 	return;
 
-def InitializeDigitalInput()
+def InitializeDigitalInput():
 	if config == None:
 		ConfigureCollector()
 	GPIO.setmode(GPIO.BCM)
 
-	pinsUsed = config.get('GPIO', 'pinsUsed')
-	digitalPoints = None
+	#pinsUsed = int(float(config.get('GPIO', 'pinsUsed')))
+	
+	digitalPoints = []
 	current = 'pin0'
 	for x in range(pinsUsed):
-		current = 'pin'+ x
+		current = 'pin'+ str(x)
 		digitalPoints.append(config.get('GPIO', current))
 		GPIO.setup(digitalPoints[x], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 	return;
